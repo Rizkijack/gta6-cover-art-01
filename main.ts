@@ -1,17 +1,19 @@
-// A working gta6-cover-art-01 entry (Node 22, standard library only): the app is this directory's app/ folder, plain
-// static files a desktop browser loads offline (app/index.html and its ES modules, no library and no network
-// request), and the program hands it in. It copies app/ and screenshots/ from beside this file to /output and writes
-// /output/dossier.json, the summary the judge reads, with the vendored make.fun library. Only the plumbing, not the
-// cover art the bounty asks for: Cover Snap, a plain one-photo square cover with a sunset tint and a bold caption,
-// exported as a 1080 x 1080 PNG. Its two sample photos (app/samples/) were made for make.fun with an image model and
-// are free to use. Build your own GTA-style cover maker in its place, put your 3 or 4 PNG or JPEG screenshots in
-// screenshots/ (the first by name is the cover) and run it.
+// Vice City Cover Studio — handoff for gta6-cover-art-01 (Node 22, standard library only).
 //
-// Serve it locally with `node serve.ts`, then open http://localhost:8080.
+// The app/ folder is a static, offline site: index.html loads four ES modules with no library and no network
+// request. cover.js paints four slanted photo panels, a sunset/neon grade, print texture and a bold original
+// caption; main.js wires photo slots, per-panel crop controls, a live caption and three post-size presets;
+// exportCoverPng encodes the finished canvas in the browser. Photos are read from the visitor's own machine.
+// The two bundled samples were made for make.fun with an image model and are free to use.
+//
+// This program copies app/ and screenshots/ beside it to /output and writes /output/dossier.json with the
+// vendored make.fun library. The first screenshot by name is the cover shown on top of the judge's sheet.
+//
+// Serve it locally with `node serve.ts`, then open the page on localhost.
 // Outside the grader's container, MAKEFUN_OUTPUT_DIR stands in for /output:
 //   mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
 
-import { cpSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildDossier } from './vendor/makefun-app.ts';
@@ -21,8 +23,15 @@ const out = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
 
 mkdirSync(out, { recursive: true });
 cpSync(join(here, 'app'), join(out, 'app'), { recursive: true });
+// The judge's cover is the first screenshot by name, so copy them in an explicit sorted order rather than
+// relying on filesystem enumeration. Sorting by name also keeps both handoff runs byte-for-byte identical.
+const screenshotSource = join(here, 'screenshots');
 mkdirSync(join(out, 'screenshots'), { recursive: true });
-if (existsSync(join(here, 'screenshots'))) cpSync(join(here, 'screenshots'), join(out, 'screenshots'), { recursive: true });
+if (existsSync(screenshotSource)) {
+  for (const name of readdirSync(screenshotSource).sort()) {
+    cpSync(join(screenshotSource, name), join(out, 'screenshots', name));
+  }
+}
 
 // The scorer's own caps (reference/gate.json): only text_max_bytes shapes the bytes; the others refuse an entry the
 // scorer would refuse (more than 4 screenshots or one over 256 KiB; more than 993 files in app/ or 48 MiB of app

@@ -3,21 +3,112 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cover Snap</title>
+<title>Vice City Cover Studio</title>
 <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-<main class="app">
-  <section class="controls">
-    <h1>Cover Snap</h1>
-    <p>A photo and a caption, made into a square cover.</p>
-    <label>Photo <input id="photo" type="file" accept="image/*"></label>
-    <label>Caption <input id="caption" type="text" maxlength="40" value="Sunset Heist"></label>
-    <button id="export" type="button">Export PNG 1080 x 1080</button>
+<div class="studio">
+  <aside class="sidebar">
+    <header class="brand">
+      <div class="brand-mark">VC</div>
+      <div class="brand-copy">
+        <h1>VICE CITY <span>COVER STUDIO</span></h1>
+        <p>Multi-panel poster maker</p>
+      </div>
+    </header>
+
+    <section class="block">
+      <h2><span>01</span> Photos</h2>
+      <div class="slots">
+        <div class="slot" data-slot="0">
+          <div class="slot-head"><b>A</b><span>Photo A</span></div>
+          <img class="thumb" id="thumb0" alt="">
+          <div class="slot-actions">
+            <label class="file-btn">Choose<input id="photo0" type="file" accept="image/*"></label>
+            <button class="mini" data-sample="0" type="button">Sample</button>
+          </div>
+        </div>
+        <div class="slot" data-slot="1">
+          <div class="slot-head"><b>B</b><span>Photo B</span></div>
+          <img class="thumb" id="thumb1" alt="">
+          <div class="slot-actions">
+            <label class="file-btn">Choose<input id="photo1" type="file" accept="image/*"></label>
+            <button class="mini" data-sample="1" type="button">Sample</button>
+          </div>
+        </div>
+        <div class="slot" data-slot="2">
+          <div class="slot-head"><b>C</b><span>Photo C</span></div>
+          <img class="thumb" id="thumb2" alt="">
+          <div class="slot-actions">
+            <label class="file-btn">Choose<input id="photo2" type="file" accept="image/*"></label>
+            <button class="mini" data-sample="2" type="button">Sample</button>
+          </div>
+        </div>
+      </div>
+      <p class="hint">Your photos never leave this browser.</p>
+    </section>
+
+    <section class="block">
+      <h2><span>02</span> Panels</h2>
+      <div class="tabs" id="panelTabs">
+        <button class="tab is-active" data-panel="0" type="button">1</button>
+        <button class="tab" data-panel="1" type="button">2</button>
+        <button class="tab" data-panel="2" type="button">3</button>
+        <button class="tab" data-panel="3" type="button">4</button>
+      </div>
+      <label class="field">Uses
+        <select id="panelSource">
+          <option value="0">Photo A</option>
+          <option value="1">Photo B</option>
+          <option value="2">Photo C</option>
+        </select>
+      </label>
+      <label class="field">Zoom <output id="zoomOut">118%</output>
+        <input id="panelZoom" type="range" min="70" max="280" value="118">
+      </label>
+      <label class="field">Pan left / right
+        <input id="panelX" type="range" min="-100" max="100" value="0">
+      </label>
+      <label class="field">Crop up / down
+        <input id="panelY" type="range" min="-100" max="100" value="-10">
+      </label>
+      <button class="reset-btn" id="panelReset" type="button">Reset this panel</button>
+    </section>
+
+    <section class="block">
+      <h2><span>03</span> Caption</h2>
+      <input id="caption" class="caption-input" type="text" maxlength="40" value="SUNSET HEIST" spellcheck="false">
+    </section>
+
+    <section class="block">
+      <h2><span>04</span> Post size</h2>
+      <div class="presets" id="sizePresets">
+        <button class="preset is-active" data-size="1080x1080" type="button"><b>Square</b><span>1080 × 1080</span></button>
+        <button class="preset" data-size="1080x1350" type="button"><b>Story</b><span>1080 × 1350</span></button>
+        <button class="preset" data-size="1920x1080" type="button"><b>Landscape</b><span>1920 × 1080</span></button>
+      </div>
+    </section>
+
+    <button class="export-btn" id="export" type="button">
+      <span>Export cover PNG</span><small id="exportSize">1080 × 1080</small>
+    </button>
     <p id="status" role="status"></p>
-  </section>
-  <canvas id="cover" width="1080" height="1080" aria-label="The cover"></canvas>
-</main>
+  </aside>
+
+  <main class="stage">
+    <div class="stage-bar">
+      <span class="live"><i></i> LIVE PREVIEW</span>
+      <span class="stage-title">FOUR PANELS · SUNSET GRADE · BOLD TYPE</span>
+      <span class="stage-size" id="sizeLabel">1080 × 1080</span>
+    </div>
+    <div class="canvas-wrap">
+      <canvas id="cover" width="1080" height="1080" aria-label="Live cover preview"></canvas>
+    </div>
+    <div class="stage-foot">
+      <span>01 · FRAME THE SHOT</span><span>02 · WRITE THE CAPTION</span><span>03 · PICK A SIZE</span><span>04 · EXPORT</span>
+    </div>
+  </main>
+</div>
 <script type="module" src="./src/main.js"></script>
 </body>
 </html>
