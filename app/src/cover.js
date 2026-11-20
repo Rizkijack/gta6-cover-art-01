@@ -26,10 +26,10 @@ export function defaultPanelSettings() {
 }
 
 const PANEL_FILTERS = [
-  'saturate(1.22) contrast(1.10)',
-  'saturate(1.42) contrast(1.18)',
-  'saturate(1.28) contrast(1.14)',
-  'saturate(1.55) contrast(1.22)',
+  'saturate(1.30) contrast(1.16)',
+  'saturate(1.55) contrast(1.24)',
+  'saturate(1.38) contrast(1.20)',
+  'saturate(1.65) contrast(1.28)',
 ];
 
 /** Fills one panel's bounding box with a cropped, panned and zoomed source photo. */
@@ -130,7 +130,7 @@ export function drawBoldCaption(ctx, w, h, caption) {
   ctx.font = fontFor(size);
   const lineHeight = size * 0.92;
   const bottom = h * 0.915;
-  const shear = 0.14;
+  const shear = 0.17;
   ctx.translate(w / 2 + shear * bottom, 0);
   ctx.transform(1, 0, -shear, 1, 0, 0);
   ctx.textAlign = 'center';
@@ -139,19 +139,19 @@ export function drawBoldCaption(ctx, w, h, caption) {
   ctx.miterLimit = 2;
 
   const fill = ctx.createLinearGradient(0, bottom - (lines.length - 1) * lineHeight - size, 0, bottom);
-  fill.addColorStop(0, '#fff2bd');
-  fill.addColorStop(0.42, '#ffb347');
-  fill.addColorStop(1, '#ff2e88');
+  fill.addColorStop(0, '#fff4c8');
+  fill.addColorStop(0.42, '#ff9c2e');
+  fill.addColorStop(1, '#ff1f8c');
 
   lines.forEach((line, i) => {
     const baseline = bottom - (lines.length - 1 - i) * lineHeight;
-    ctx.fillStyle = 'rgba(24, 4, 44, 0.92)';
+    ctx.fillStyle = 'rgba(14, 2, 34, 0.94)';
     ctx.fillText(line, size * 0.035, baseline + size * 0.045);
-    ctx.lineWidth = size * 0.17;
-    ctx.strokeStyle = '#190629';
+    ctx.lineWidth = size * 0.20;
+    ctx.strokeStyle = '#12041f';
     ctx.strokeText(line, 0, baseline);
-    ctx.lineWidth = size * 0.055;
-    ctx.strokeStyle = 'rgba(255, 240, 214, 0.9)';
+    ctx.lineWidth = size * 0.05;
+    ctx.strokeStyle = 'rgba(255, 240, 214, 0.92)';
     ctx.strokeText(line, 0, baseline);
     ctx.fillStyle = fill;
     ctx.fillText(line, 0, baseline);

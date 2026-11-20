@@ -58,7 +58,7 @@ export function drawHalftone(ctx, w, h) {
   const step = Math.max(6, Math.round(w / 150));
   ctx.save();
   ctx.globalCompositeOperation = 'overlay';
-  ctx.fillStyle = 'rgba(255, 210, 170, 0.22)';
+  ctx.fillStyle = 'rgba(170, 225, 255, 0.20)';
   for (let y = Math.floor(h * 0.56); y < h; y += step) {
     const fade = (y - h * 0.56) / (h * 0.44);
     for (let x = Math.floor(w * 0.52); x < w; x += step) {
@@ -71,42 +71,52 @@ export function drawHalftone(ctx, w, h) {
   ctx.restore();
 }
 
-/** The magenta / orange / violet sunset wash, a warm sun flare and a soft corner vignette. */
+/** The neon-noir grade: indigo shadows, hot magenta light, a cool vertical glow and a deep vignette. */
 export function applyViceCityGrade(ctx, w, h) {
   ctx.save();
 
-  // Violet sky at the top, clean middle, hot pink and orange toward the street.
+  // Deep indigo at the top, a violet middle, hot magenta low down and only a trace of sunset orange.
   const wash = ctx.createLinearGradient(0, 0, 0, h);
-  wash.addColorStop(0, 'rgba(58, 16, 122, 0.55)');
-  wash.addColorStop(0.28, 'rgba(126, 26, 140, 0.12)');
-  wash.addColorStop(0.62, 'rgba(236, 40, 122, 0.20)');
-  wash.addColorStop(0.85, 'rgba(255, 76, 84, 0.42)');
-  wash.addColorStop(1, 'rgba(255, 150, 46, 0.50)');
+  wash.addColorStop(0, 'rgba(14, 8, 62, 0.74)');
+  wash.addColorStop(0.26, 'rgba(74, 18, 132, 0.18)');
+  wash.addColorStop(0.55, 'rgba(168, 26, 158, 0.20)');
+  wash.addColorStop(0.78, 'rgba(255, 28, 130, 0.34)');
+  wash.addColorStop(1, 'rgba(255, 96, 58, 0.40)');
   ctx.fillStyle = wash;
   ctx.fillRect(0, 0, w, h);
 
-  // Sun flare, high and off-centre, in screen blend so the highlights stay luminous.
+  // A high flare, now pink-white at its core and fading into violet rather than amber.
   ctx.globalCompositeOperation = 'screen';
   const sun = ctx.createRadialGradient(w * 0.68, h * 0.30, 0, w * 0.68, h * 0.30, w * 0.62);
-  sun.addColorStop(0, 'rgba(255, 176, 84, 0.46)');
-  sun.addColorStop(0.35, 'rgba(255, 90, 120, 0.18)');
-  sun.addColorStop(1, 'rgba(255, 60, 160, 0)');
+  sun.addColorStop(0, 'rgba(255, 214, 160, 0.40)');
+  sun.addColorStop(0.30, 'rgba(255, 80, 150, 0.22)');
+  sun.addColorStop(1, 'rgba(180, 40, 220, 0)');
   ctx.fillStyle = sun;
   ctx.fillRect(0, 0, w, h);
 
-  // A cool cyan rim on the left keeps the neon palette from turning into plain red.
-  const neon = ctx.createLinearGradient(0, h * 0.25, w, h * 0.75);
-  neon.addColorStop(0, 'rgba(30, 220, 230, 0.16)');
-  neon.addColorStop(0.45, 'rgba(120, 40, 200, 0)');
-  neon.addColorStop(1, 'rgba(255, 40, 130, 0.18)');
+  // Cyan from the left, magenta from the right: reflected neon rather than a flat warm wash.
+  const neon = ctx.createLinearGradient(0, 0, w, 0);
+  neon.addColorStop(0, 'rgba(0, 226, 255, 0.26)');
+  neon.addColorStop(0.28, 'rgba(0, 226, 255, 0.04)');
+  neon.addColorStop(0.62, 'rgba(255, 20, 150, 0.06)');
+  neon.addColorStop(1, 'rgba(255, 20, 150, 0.28)');
   ctx.fillStyle = neon;
+  ctx.fillRect(0, 0, w, h);
+
+  // A subtle vertical light gradient: cool glow up top, warm neon bleed at the foot.
+  const shaft = ctx.createLinearGradient(0, 0, 0, h);
+  shaft.addColorStop(0, 'rgba(120, 220, 255, 0.14)');
+  shaft.addColorStop(0.42, 'rgba(120, 220, 255, 0)');
+  shaft.addColorStop(0.72, 'rgba(255, 40, 170, 0.06)');
+  shaft.addColorStop(1, 'rgba(255, 40, 170, 0.12)');
+  ctx.fillStyle = shaft;
   ctx.fillRect(0, 0, w, h);
   ctx.globalCompositeOperation = 'source-over';
 
-  // Vignette last: darker corners make the lettering pop.
+  // Vignette last: the deeper indigo corners make the lettering pop.
   const vig = ctx.createRadialGradient(w * 0.5, h * 0.46, Math.min(w, h) * 0.24, w * 0.5, h * 0.5, Math.max(w, h) * 0.78);
-  vig.addColorStop(0, 'rgba(12, 4, 28, 0)');
-  vig.addColorStop(1, 'rgba(12, 4, 28, 0.62)');
+  vig.addColorStop(0, 'rgba(6, 2, 26, 0)');
+  vig.addColorStop(1, 'rgba(6, 2, 26, 0.76)');
   ctx.fillStyle = vig;
   ctx.fillRect(0, 0, w, h);
   ctx.restore();
