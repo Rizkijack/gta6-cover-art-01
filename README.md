@@ -6,6 +6,12 @@
 
 An offline web app that turns a photo and a caption into multi-panel GTA-style cover art and exports a PNG.
 
+## Design
+
+The studio paints your photo across four slanted, overlapping panels for a multi-panel Vice City poster look, then adds a sunset/neon grade, print grain and a bold caption of your choice. Load a photo with any of the three Photo A/B/C file pickers (or click a bundled sample) — images stay on your machine. Pick a post size from the 1920 × 1080, 1080 × 1080 or 1080 × 1350 presets, adjust each panel's crop with the zoom/X/Y sliders, then press Export PNG to save the finished cover locally.
+
+Example screenshots of the cover, editor and the square/story sizes live in `screenshots/` (`1-cover.png` through `4-story.png`).
+
 ## Run it
 
 ```sh

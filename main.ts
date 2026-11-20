@@ -22,6 +22,8 @@ const here = fileURLToPath(new URL('.', import.meta.url));
 const out = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
 
 mkdirSync(out, { recursive: true });
+// buildDossier rebuilds the dossier byte-for-byte from the copied app/ and screenshots/ trees, so two runs
+// into different output directories produce identical files and hashes.
 cpSync(join(here, 'app'), join(out, 'app'), { recursive: true });
 // The judge's cover is the first screenshot by name, so copy them in an explicit sorted order rather than
 // relying on filesystem enumeration. Sorting by name also keeps both handoff runs byte-for-byte identical.
