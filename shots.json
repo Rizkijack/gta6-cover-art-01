@@ -1,6 +1,10 @@
-[
-  { "name": "1-cover.png", "query": "?shot=cover&photo=pier&caption=SUNSET%20HEIST&size=1920x1080", "w": 1280, "h": 720 },
-  { "name": "2-editor.png", "query": "?shot=editor&photo=pier&photo2=boulevard&caption=BOULEVARD%20QUEEN&size=1920x1080", "w": 1280, "h": 720 },
-  { "name": "3-square.png", "query": "?shot=cover&photo=boulevard&caption=NIGHT%20SHIFT&size=1080x1080", "w": 1080, "h": 1080 },
-  { "name": "4-story.png", "query": "?shot=cover&photo=pier&caption=VICE%20CITY&size=1080x1350", "w": 1024, "h": 1280 }
-]
+{
+  "app": "./app/index.html",
+  "ready": "window.__shotReady",
+  "shots": [
+    { "name": "cover", "url": "?shot=cover", "size": "1920x1080" },
+    { "name": "editor", "url": "?shot=editor", "size": "1920x1080" },
+    { "name": "square", "url": "?shot=square", "size": "1080x1080" },
+    { "name": "story", "url": "?shot=story", "size": "1080x1350" }
+  ]
+}

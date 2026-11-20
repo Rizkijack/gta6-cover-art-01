@@ -3,112 +3,104 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Vice City Cover Studio</title>
+<title>NEON VICE — Cover Art Studio</title>
 <link rel="stylesheet" href="./style.css">
+<script type="module" src="./src/main.js"></script>
 </head>
 <body>
-<div class="studio">
-  <aside class="sidebar">
-    <header class="brand">
-      <div class="brand-mark">VC</div>
-      <div class="brand-copy">
-        <h1>VICE CITY <span>COVER STUDIO</span></h1>
-        <p>Multi-panel poster maker</p>
-      </div>
-    </header>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">NV</span>
+      <span class="brand-copy"><strong>NEON VICE</strong><small>COVER ART STUDIO / OFFLINE</small></span>
+    </div>
+    <div class="top-actions">
+      <span id="sizeLabel" class="pill">LANDSCAPE 1920×1080</span>
+      <button id="exportBtn" class="primary" type="button">EXPORT PNG</button>
+    </div>
+  </header>
 
-    <section class="block">
-      <h2><span>01</span> Photos</h2>
-      <div class="slots">
-        <div class="slot" data-slot="0">
-          <div class="slot-head"><b>A</b><span>Photo A</span></div>
-          <img class="thumb" id="thumb0" alt="">
-          <div class="slot-actions">
-            <label class="file-btn">Choose<input id="photo0" type="file" accept="image/*"></label>
-            <button class="mini" data-sample="0" type="button">Sample</button>
+  <main class="workspace">
+    <aside class="sidebar">
+      <section class="block">
+        <h2><span>01</span> SOURCES</h2>
+        <p class="note">Add up to three photos. Nothing is uploaded.</p>
+        <div class="source-card">
+          <img id="thumb0" alt="Photo 1 preview">
+          <div>
+            <label for="file0">PHOTO 1</label>
+            <input id="file0" type="file" accept="image/*">
+            <select id="sample0" aria-label="Sample for photo 1">
+              <option value="">use sample…</option>
+              <option value="pier">pier.jpg</option>
+              <option value="boulevard">boulevard.jpg</option>
+            </select>
           </div>
         </div>
-        <div class="slot" data-slot="1">
-          <div class="slot-head"><b>B</b><span>Photo B</span></div>
-          <img class="thumb" id="thumb1" alt="">
-          <div class="slot-actions">
-            <label class="file-btn">Choose<input id="photo1" type="file" accept="image/*"></label>
-            <button class="mini" data-sample="1" type="button">Sample</button>
+        <div class="source-card">
+          <img id="thumb1" alt="Photo 2 preview">
+          <div>
+            <label for="file1">PHOTO 2</label>
+            <input id="file1" type="file" accept="image/*">
+            <select id="sample1" aria-label="Sample for photo 2">
+              <option value="">use sample…</option>
+              <option value="pier">pier.jpg</option>
+              <option value="boulevard">boulevard.jpg</option>
+            </select>
           </div>
         </div>
-        <div class="slot" data-slot="2">
-          <div class="slot-head"><b>C</b><span>Photo C</span></div>
-          <img class="thumb" id="thumb2" alt="">
-          <div class="slot-actions">
-            <label class="file-btn">Choose<input id="photo2" type="file" accept="image/*"></label>
-            <button class="mini" data-sample="2" type="button">Sample</button>
+        <div class="source-card">
+          <img id="thumb2" alt="Photo 3 preview">
+          <div>
+            <label for="file2">PHOTO 3</label>
+            <input id="file2" type="file" accept="image/*">
+            <select id="sample2" aria-label="Sample for photo 3">
+              <option value="">use sample…</option>
+              <option value="pier">pier.jpg</option>
+              <option value="boulevard">boulevard.jpg</option>
+            </select>
           </div>
         </div>
-      </div>
-      <p class="hint">Your photos never leave this browser.</p>
-    </section>
+      </section>
 
-    <section class="block">
-      <h2><span>02</span> Panels</h2>
-      <div class="tabs" id="panelTabs">
-        <button class="tab is-active" data-panel="0" type="button">1</button>
-        <button class="tab" data-panel="1" type="button">2</button>
-        <button class="tab" data-panel="2" type="button">3</button>
-        <button class="tab" data-panel="3" type="button">4</button>
-      </div>
-      <label class="field">Uses
-        <select id="panelSource">
-          <option value="0">Photo A</option>
-          <option value="1">Photo B</option>
-          <option value="2">Photo C</option>
+      <section class="block">
+        <h2><span>02</span> PANELS</h2>
+        <p class="note">Four slanted frames. Crop each one separately.</p>
+        <div id="panelList"></div>
+      </section>
+
+      <section class="block">
+        <h2><span>03</span> CAPTION &amp; GRADE</h2>
+        <label class="field" for="captionInput">BIG LETTERING</label>
+        <input id="captionInput" type="text" maxlength="40" value="VICE CITY NIGHTS" autocomplete="off">
+        <label class="field" for="paletteSelect">COLOUR GRADE</label>
+        <select id="paletteSelect">
+          <option value="vice">Vice Sunset</option>
+          <option value="midnight">Midnight Cyan</option>
+          <option value="heat">Magenta Heat</option>
         </select>
-      </label>
-      <label class="field">Zoom <output id="zoomOut">118%</output>
-        <input id="panelZoom" type="range" min="70" max="280" value="118">
-      </label>
-      <label class="field">Pan left / right
-        <input id="panelX" type="range" min="-100" max="100" value="0">
-      </label>
-      <label class="field">Crop up / down
-        <input id="panelY" type="range" min="-100" max="100" value="-10">
-      </label>
-      <button class="reset-btn" id="panelReset" type="button">Reset this panel</button>
+        <label class="field" for="gradeRange">EFFECT STRENGTH <output id="gradeOut">100%</output></label>
+        <input id="gradeRange" type="range" min="0" max="150" value="100">
+        <label class="check"><input id="grainCheck" type="checkbox" checked> Film grain</label>
+      </section>
+
+      <section class="block">
+        <h2><span>04</span> FORMAT</h2>
+        <div class="sizes">
+          <button type="button" data-size="1920x1080" class="active">1920×1080</button>
+          <button type="button" data-size="1080x1080">1080×1080</button>
+          <button type="button" data-size="1080x1350">1080×1350</button>
+        </div>
+        <p class="note">Export writes a full-resolution PNG straight to your downloads.</p>
+      </section>
+    </aside>
+
+    <section class="stage-wrap">
+      <div class="stage-head"><span>LIVE PREVIEW</span><span id="statusLine">ready</span></div>
+      <div class="canvas-frame"><canvas id="stage" width="1920" height="1080"></canvas></div>
+      <p class="hint">Drag in a photo, tune the four panels, then export. Everything runs in this tab — your photos never leave the machine.</p>
     </section>
-
-    <section class="block">
-      <h2><span>03</span> Caption</h2>
-      <input id="caption" class="caption-input" type="text" maxlength="40" value="SUNSET HEIST" spellcheck="false">
-    </section>
-
-    <section class="block">
-      <h2><span>04</span> Post size</h2>
-      <div class="presets" id="sizePresets">
-        <button class="preset is-active" data-size="1080x1080" type="button"><b>Square</b><span>1080 × 1080</span></button>
-        <button class="preset" data-size="1080x1350" type="button"><b>Story</b><span>1080 × 1350</span></button>
-        <button class="preset" data-size="1920x1080" type="button"><b>Landscape</b><span>1920 × 1080</span></button>
-      </div>
-    </section>
-
-    <button class="export-btn" id="export" type="button">
-      <span>Export cover PNG</span><small id="exportSize">1080 × 1080</small>
-    </button>
-    <p id="status" role="status"></p>
-  </aside>
-
-  <main class="stage">
-    <div class="stage-bar">
-      <span class="live"><i></i> LIVE PREVIEW</span>
-      <span class="stage-title">FOUR PANELS · SUNSET GRADE · BOLD TYPE</span>
-      <span class="stage-size" id="sizeLabel">1080 × 1080</span>
-    </div>
-    <div class="canvas-wrap">
-      <canvas id="cover" width="1080" height="1080" aria-label="Live cover preview"></canvas>
-    </div>
-    <div class="stage-foot">
-      <span>01 · FRAME THE SHOT</span><span>02 · WRITE THE CAPTION</span><span>03 · PICK A SIZE</span><span>04 · EXPORT</span>
-    </div>
   </main>
-</div>
-<script type="module" src="./src/main.js"></script>
+
+  <footer>NEON VICE is an original poster toy. No Rockstar Games logo, artwork or fonts are used.</footer>
 </body>
 </html>

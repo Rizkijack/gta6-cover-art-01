@@ -1,40 +1,44 @@
-// Fixed scenes for the four screenshots. ?shot=cover is the bare exported cover, ?shot=editor is the full studio;
-// ?photo / ?photo2 pick bundled samples, ?caption sets the headline, ?size sets the canvas and ?solo=1 fills every
-// panel from one photo. window.__shotReady flips only after the scene has been painted.
+// shots.js — deterministic hooks used to render the four hand-in screenshots.
+// ?shot=cover|editor|square|story, ?photo=pier|boulevard, ?caption=... all work
+// without any network access, and window.__shotReady flips once the draw lands.
 
-function sampleUrl(name, fallback) {
-  const clean = /^[a-z0-9_-]+$/i.test(name ?? '') ? name : fallback;
-  return `samples/${clean}.jpg`;
+export const SAMPLES = {
+  pier: './samples/pier.jpg',
+  boulevard: './samples/boulevard.jpg'
+};
+
+export const SHOTS = {
+  cover: { size: '1920x1080', photo: 'pier', caption: 'VICE CITY NIGHTS' },
+  editor: { size: '1920x1080', photo: 'boulevard', caption: 'VICE CITY NIGHTS' },
+  square: { size: '1080x1080', photo: 'pier', caption: 'NEON NIGHTS' },
+  story: { size: '1080x1350', photo: 'boulevard', caption: 'AFTER DARK' }
+};
+
+export const SIZES = {
+  '1920x1080': { width: 1920, height: 1080, label: 'LANDSCAPE 1920×1080' },
+  '1080x1080': { width: 1080, height: 1080, label: 'SQUARE 1080×1080' },
+  '1080x1350': { width: 1080, height: 1350, label: 'PORTRAIT 1080×1350' }
+};
+
+export function readQuery() {
+  return new URLSearchParams(window.location.search);
 }
 
-/** Builds one screenshot scene through the editor's own setters, then signals readiness. */
-export async function runShot(shot, query, api) {
-  if (shot === 'cover') document.body.classList.add('shot-cover');
+// Turn the query string into a plain plan the editor can apply to its state.
+export function shotPlan(query) {
+  const name = query.get('shot') || 'editor';
+  const preset = SHOTS[name] || SHOTS.editor;
+  const photoArg = query.get('photo');
+  const captionArg = query.get('caption');
+  return {
+    name: SHOTS[name] ? name : 'editor',
+    size: preset.size,
+    photo: photoArg && SAMPLES[photoArg] ? photoArg : preset.photo,
+    caption: captionArg !== null ? captionArg : preset.caption
+  };
+}
 
-  if (query.get('size')) api.setSize(query.get('size'));
-
-  const first = query.get('photo');
-  const second = query.get('photo2');
-  if (first || second) {
-    await Promise.all([
-      api.setPhoto(0, sampleUrl(first ?? 'pier', 'pier')),
-      second ? api.setPhoto(1, sampleUrl(second, 'boulevard')) : Promise.resolve(),
-    ]);
-    api.setPanelSources(second ? [0, 1, 0, 1] : [0, 0, 0, 0]);
-  } else if (shot === 'editor') {
-    await Promise.all([
-      api.setPhoto(0, sampleUrl('pier', 'pier')),
-      api.setPhoto(1, sampleUrl('boulevard', 'boulevard')),
-    ]);
-    api.setPanelSources([0, 1, 0, 0]);
-  } else {
-    await api.setPhoto(0, sampleUrl('pier', 'pier'));
-    api.setPanelSources([0, 0, 0, 0]);
-  }
-
-  if (query.get('solo') === '1') api.setPanelSources([0, 0, 0, 0]);
-  api.setCaption(query.get('caption') ?? 'SUNSET HEIST');
-  api.redraw();
-
-  requestAnimationFrame(() => requestAnimationFrame(() => { window.__shotReady = true; }));
+export function markReady() {
+  window.__shotReady = true;
+  document.documentElement.dataset.shotReady = 'true';
 }

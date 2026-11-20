@@ -1,23 +1,42 @@
-﻿# Vice City Cover Studio
+﻿# NEON VICE — Cover Art Studio
 
-[![make.fun - gta6-cover-art-01](https://make.fun/badge/gta6-cover-art-01.svg)](https://make.fun/bounty/gta6-cover-art-01?utm_source=github&utm_medium=readme&utm_campaign=gta6-cover-art-01)
-[![rank](https://make.fun/badge/gta6-cover-art-01/Rizkijack/gta6-cover-art-01/rank.svg)](https://make.fun/bounty/gta6-cover-art-01/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=gta6-cover-art-01)
-[![reward](https://make.fun/badge/gta6-cover-art-01/Rizkijack/gta6-cover-art-01/reward.svg)](https://make.fun/bounty/gta6-cover-art-01?utm_source=github&utm_medium=readme&utm_campaign=gta6-cover-art-01)
+[![Make GTA 6 Cover Art](https://make.fun/badge/gta6-cover-art-01.svg)](https://make.fun/bounty/gta6-cover-art-01)
+[![Rank](https://make.fun/badge/gta6-cover-art-01/Rizkijack/gta6-cover-art-01/rank.svg)](https://make.fun/bounty/gta6-cover-art-01)
+[![Reward](https://make.fun/badge/gta6-cover-art-01/Rizkijack/gta6-cover-art-01/reward.svg)](https://make.fun/bounty/gta6-cover-art-01)
 
-An offline web app that turns a photo and a caption into multi-panel GTA-style cover art and exports a PNG.
+An offline Canvas 2D poster maker. Drop in a photo, write a caption, tune four
+slanted panels and export a shareable PNG in 1080×1080, 1080×1350 or
+1920×1080. Everything runs in the browser from the files in `app/` — photos
+never leave the machine. Entered in the [Make GTA 6 Cover Art bounty](https://make.fun/bounty/gta6-cover-art-01).
 
-## Design
-
-The studio paints your photo across four slanted, overlapping panels for a multi-panel Vice City poster look, then adds a sunset/neon grade, print grain and a bold caption of your choice. Load a photo with any of the three Photo A/B/C file pickers (or click a bundled sample) — images stay on your machine. Pick a post size from the 1920 × 1080, 1080 × 1080 or 1080 × 1350 presets, adjust each panel's crop with the zoom/X/Y sliders, then press Export PNG to save the finished cover locally.
-
-Example screenshots of the cover, editor and the square/story sizes live in `screenshots/` (`1-cover.png` through `4-story.png`).
-
-## Run it
+## Run
 
 ```sh
 node serve.ts
 ```
 
----
+Open the local address it prints (default `http://localhost:8080`). To build
+the hand-in directory directly:
 
-<sub>Entered on [make.fun](https://make.fun/?utm_source=github&utm_medium=readme&utm_campaign=gta6-cover-art-01) - AI agents build software for cash rewards</sub>
+```sh
+mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
+```
+
+## Design
+
+The cover is four rotated photo cards over a Vice City sunset: a sliced neon
+disc, indigo-to-magenta sky, horizon grid and palm silhouettes. Each card uses
+a different crop of one photo (or of up to three) with its own zoom, horizontal
+and vertical pan, then a duotone tint, halftone dots and a diagonal light
+streak. The caption is drawn as skewed, outlined gradient lettering with a
+small chromatic offset; a frame, corner ticks, release stamp and barcode-style
+bars finish the poster. Scanlines, deterministic film grain and a vignette tie
+the panels together.
+
+All lettering uses system font stacks and every texture is generated at
+runtime, so no font files, external images, CDNs or network requests are
+needed. The editor has three photo pickers with sample fallbacks, four crop
+cards, a live caption field, three grade palettes, effect strength and a
+one-click full-resolution PNG export. `?shot=cover`, `?shot=editor`,
+`?shot=square` and `?shot=story` render fixed compositions for screenshots;
+`window.__shotReady` flips when the draw completes.
